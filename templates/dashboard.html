@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - LayanWarga</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style> body { font-family: 'Inter', sans-serif; } </style>
+</head>
+<body class="bg-gray-50 min-h-screen text-gray-800">
+
+    <nav class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="font-bold text-xl flex items-center gap-2">
+                    <i class="fa-solid fa-building-columns"></i> LayanWarga
+                </div>
+                <button onclick="logout()" class="bg-white/20 hover:bg-white/30 backdrop-blur-sm px-4 py-2 rounded-lg text-sm font-medium transition duration-300 flex items-center gap-2">
+                    <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 lg:p-8">
+            <div class="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                <div class="bg-blue-100 p-3 rounded-lg text-blue-600"><i class="fa-solid fa-file-signature text-xl"></i></div>
+                <h2 class="text-2xl font-bold text-gray-800">Buat Pengajuan Baru</h2>
+            </div>
+            
+            <form id="formPengajuan" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Jenis Surat</label>
+                        <select id="jenis_surat" required class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                            <option value="Surat Pengantar KTP">Surat Pengantar KTP</option>
+                            <option value="Surat Keterangan Usaha">Surat Keterangan Usaha (SKU)</option>
+                            <option value="Surat Keterangan Domisili">Surat Keterangan Domisili</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Keperluan</label>
+                        <input type="text" id="keperluan" required class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Contoh: Syarat melamar kerja">
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 border-dashed">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2"><i class="fa-solid fa-id-card text-blue-500 mr-1"></i> Upload KTP</label>
+                        <input type="file" id="file_ktp" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 border-dashed">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2"><i class="fa-solid fa-users text-blue-500 mr-1"></i> Upload KK</label>
+                        <input type="file" id="file_kk" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                    </div>
+                </div>
+                <button type="submit" id="btnSubmit" class="w-full md:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 px-8 rounded-xl shadow-md transform hover:-translate-y-0.5 transition duration-200 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Kirim Pengajuan
+                </button>
+            </form>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="p-6 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
+                <i class="fa-solid fa-clock-rotate-left text-gray-500"></i>
+                <h2 class="text-lg font-bold text-gray-800">Riwayat Pengajuan Saya</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-white">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Surat & Keperluan</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Dokumen</th>
+                            <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="bg-white divide-y divide-gray-100"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = '/login'; 
+
+        async function fetchPengajuan() {
+            try {
+                const response = await fetch('/api/pengajuan', { headers: { 'Authorization': `Bearer ${token}` } });
+                const result = await response.json();
+                if (response.ok) renderTable(result.data);
+                else if (response.status === 401) logout(); 
+            } catch (error) { console.error("Gagal", error); }
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            if(!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-12 text-center text-gray-400"><i class="fa-solid fa-folder-open text-4xl mb-3"></i><p>Belum ada pengajuan surat.</p></td></tr>';
+                return;
+            }
+
+            data.forEach(item => {
+                let statusBadge = '';
+                if(item.Status === 'Pending') statusBadge = '<span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-bold border border-yellow-200"><i class="fa-regular fa-clock mr-1"></i> Pending</span>';
+                else if(item.Status === 'Diproses') statusBadge = '<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-bold border border-blue-200"><i class="fa-solid fa-spinner mr-1"></i> Diproses</span>';
+                else if(item.Status === 'Selesai') statusBadge = '<span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold border border-green-200"><i class="fa-solid fa-check mr-1"></i> Selesai</span>';
+                else statusBadge = '<span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-bold border border-red-200"><i class="fa-solid fa-xmark mr-1"></i> Ditolak</span>';
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50 transition duration-150">
+                        <td class="px-6 py-4">
+                            <div class="text-sm font-bold text-gray-900">${item.JenisSurat}</div>
+                            <div class="text-sm text-gray-500 mt-1">${item.Keperluan}</div>
+                        </td>
+                        <td class="px-6 py-4">${statusBadge}</td>
+                        <td class="px-6 py-4 text-sm">
+                            <div class="flex gap-3">
+                                <a href="${item.FileKTPUrl}" target="_blank" class="text-blue-600 hover:text-blue-800 flex items-center gap-1"><i class="fa-solid fa-link"></i> KTP</a>
+                                <a href="${item.FileKKUrl}" target="_blank" class="text-blue-600 hover:text-blue-800 flex items-center gap-1"><i class="fa-solid fa-link"></i> KK</a>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <button onclick="batalkanPengajuan(${item.ID})" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg text-sm font-semibold transition"><i class="fa-solid fa-trash-can"></i> Batal</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        document.getElementById('formPengajuan').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btnSubmit = document.getElementById('btnSubmit');
+            btnSubmit.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Mengirim...'; 
+            btnSubmit.disabled = true;
+
+            const formData = new FormData();
+            formData.append('jenis_surat', document.getElementById('jenis_surat').value);
+            formData.append('keperluan', document.getElementById('keperluan').value);
+            formData.append('file_ktp', document.getElementById('file_ktp').files[0]);
+            formData.append('file_kk', document.getElementById('file_kk').files[0]);
+
+            try {
+                const response = await fetch('/api/pengajuan', {
+                    method: 'POST', headers: { 'Authorization': `Bearer ${token}` }, body: formData
+                });
+                if (response.ok) {
+                    Swal.fire({ title: 'Berhasil!', text: 'Pengajuan surat berhasil dikirim.', icon: 'success', confirmButtonColor: '#2563eb' });
+                    document.getElementById('formPengajuan').reset();
+                    fetchPengajuan(); 
+                } else {
+                    const errorData = await response.json();
+                    Swal.fire({ title: 'Gagal!', text: errorData.error, icon: 'error', confirmButtonColor: '#2563eb' });
+                }
+            } catch (error) { Swal.fire('Error', 'Terjadi kesalahan jaringan.', 'error'); } 
+            finally {
+                btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pengajuan'; 
+                btnSubmit.disabled = false;
+            }
+        });
+
+        async function batalkanPengajuan(id) {
+            const result = await Swal.fire({
+                title: 'Batalkan Pengajuan?',
+                text: "Data yang dibatalkan tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, batalkan!',
+                cancelButtonText: 'Tutup'
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch(`/api/pengajuan/${id}`, {
+                        method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (response.ok) {
+                        Swal.fire('Dibatalkan!', 'Pengajuan telah dibatalkan.', 'success');
+                        fetchPengajuan();
+                    } else { Swal.fire('Gagal!', 'Tidak dapat membatalkan pengajuan.', 'error'); }
+                } catch (error) { Swal.fire('Error', 'Kesalahan jaringan.', 'error'); }
+            }
+        }
+
+        function logout() { localStorage.removeItem('token'); window.location.href = '/login'; }
+        fetchPengajuan();
+    </script>
+</body>
+</html>

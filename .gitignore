@@ -1,0 +1,17 @@
+# Rahasia (SANGAT PENTING)
+.env
+
+# Hasil kompilasi/build (Termasuk untuk mesin Windows)
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+/main
+
+# Folder dependensi Go
+/vendor/
+
+# File sistem operasi
+.DS_Store
+Thumbs.db
