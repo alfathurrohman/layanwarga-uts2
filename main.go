@@ -18,8 +18,8 @@ func main() {
 	// 2. Koneksi ke AWS S3
 	config.ConnectAWS()
 
-	// 3. Baris ajaib untuk menyulap akun Budi menjadi Admin secara otomatis
-	config.DB.Model(&models.User{}).Where("email = ?", "budi@gmail.com").Update("role", "admin")
+	// 3. Baris ajaib untuk menyulap akun Alif menjadi Admin secara otomatis
+	config.DB.Model(&models.User{}).Where("email = ?", "alif@gmail.com").Update("role", "admin")
 
 	// 4. Inisialisasi Web Server menggunakan Gin
 	r := gin.Default()
